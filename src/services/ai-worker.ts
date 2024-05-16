@@ -50,7 +50,10 @@ export async function localTranscribe(audio: Blob, model: "tiny" | "base"): Prom
         if (transcriber) {
             // @ts-ignore
             const output = await transcriber(audio, {
+                top_k: 0,
+                do_sample: false,
                 return_timestamps: true,
+                force_full_sequences: false,
                 chunk_length_s: 30,
                 stride_length_s: 5,
                 callback_function: callback_function, // after each generation step
@@ -88,6 +91,7 @@ function chunk_callback(chunk: any) {
         });
     }
 }
+
 
 // Inject custom callback function to handle merging of chunks
 function callback_function(item: any) {

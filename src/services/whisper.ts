@@ -21,21 +21,7 @@ export function doLocalWhisper(audioFile: Blob, model: "tiny" | "base"): Promise
             const arrayBuffer = fileReader.result as ArrayBuffer;
             const audioData = await audioCTX.decodeAudioData(arrayBuffer);
 
-            let audio;
-            if (audioData.numberOfChannels === 2) {
-                const SCALING_FACTOR = Math.sqrt(2);
-
-                const left = audioData.getChannelData(0);
-                const right = audioData.getChannelData(1);
-
-                audio = new Float32Array(left.length);
-                for (let i = 0; i < audioData.length; ++i) {
-                    audio[i] = SCALING_FACTOR * (left[i] + right[i]) / 2;
-                }
-            } else {
-                // If the audio is not stereo, we can just use the first channel:
-                audio = audioData.getChannelData(0);
-            }
+            let audio = audioData.getChannelData(0);
 
             whisperWorker.onmessage = async (e) => {
                 if (e.data.type === "transcribe") {
