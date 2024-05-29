@@ -1,12 +1,9 @@
 import { LitElement, css, html } from 'lit';
 import { property, state, customElement } from 'lit/decorators.js';
 
-import '@shoelace-style/shoelace/dist/components/textarea/textarea.js';
-import '@shoelace-style/shoelace/dist/components/button/button.js';
-
-import { fluentButton, fluentTextArea, provideFluentDesignSystem } from '@fluentui/web-components';
-
-provideFluentDesignSystem().register(fluentButton(), fluentTextArea());
+import '@fluentui/web-components/button.js';
+import '@fluentui/web-components/text.js';
+import '@fluentui/web-components/label.js';
 
 import { styles } from '../styles/shared-styles';
 
@@ -37,16 +34,11 @@ export class AppHome extends LitElement {
         height: 11px;
       }
 
-      fluent-text-area {
-        width: 100%;
-        height: 100%;
-      }
-
-      fluent-text-area::part(control) {
-        height: 50vh;
-        border: none;
-        border-radius: 8px;
-        overflow-y: hidden;
+      fluent-text {
+        min-height: 50vh;
+        background: #ffffff12;
+        border-radius: 4px;
+        padding: 8px;
       }
 
       #actions-menu {
@@ -54,6 +46,8 @@ export class AppHome extends LitElement {
         gap: 8px;
         flex-direction: row;
         justify-content: space-between;
+
+        margin-bottom: 10px;
       }
 
       #main-action-block {
@@ -88,15 +82,9 @@ export class AppHome extends LitElement {
         flex-direction: column;
       }
 
-      @media(prefers-color-scheme: dark) {
-        fluent-text-area::part(control) {
-            background: #ffffff0f;
-            color: white;
-        }
-
-        fluent-button.neutral::part(control) {
-          background: #ffffff14;
-          color: white;
+      @media(prefers-color-scheme: light) {
+        fluent-text {
+          background: #f0f0f0;
         }
       }
 
@@ -207,7 +195,7 @@ export class AppHome extends LitElement {
       <main>
         <div id="actions-menu">
           <div id="main-action-block">
-            <fluent-button @click="${this.transcribeFile}" appearance="accent" ?disabled="${this.transcribing}" id="main-action">Upload a File</fluent-button>
+            <fluent-button appearance="primary" @click="${this.transcribeFile}" appearance="accent" ?disabled="${this.transcribing}" id="main-action">Upload a File</fluent-button>
 
             ${
               this.currentFileData ? html`
@@ -240,7 +228,9 @@ export class AppHome extends LitElement {
             </fluent-button>
           </div>
         </div>
-        <fluent-text-area placeholder="Transcription will start when you upload a file" readonly .value="${this.transcribedText || ""}"></fluent-text-area>
+        <fluent-text>
+          <span>${this.transcribedText || ""}</span>
+        </fluent-text>
       </main>
     `;
   }

@@ -16,21 +16,3 @@ html, body {
 
   overflow-y: hidden;
 }
-
-@media (prefers-color-scheme: dark) {
-
-  html,
-  body {
-    background-color: #181818;
-    color: white;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-
-  html,
-  body {
-    background-color: #f5f5f5;
-    color: black;
-  }
-}
