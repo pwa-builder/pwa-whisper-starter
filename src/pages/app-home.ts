@@ -134,8 +134,7 @@ export class AppHome extends LitElement {
         {
           description: "Video",
           accept: {
-            "video/*": [".wav"],
-            "audio/*": [".wav"],
+            "audio/*": [".mp3", ".wav"],
           },
         },
       ],
@@ -163,7 +162,7 @@ export class AppHome extends LitElement {
     this.transcribedText = "Loading Model...";
 
     const { doLocalWhisper } = await import('../services/whisper');
-    const transcript = await doLocalWhisper(fileData, "tiny");
+    const transcript = await doLocalWhisper(fileData, "small");
 
     this.transcribedText = transcript.transcription;
     this.transcribing = false;

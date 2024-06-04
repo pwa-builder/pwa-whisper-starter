@@ -11,7 +11,7 @@ export async function loadTranscriber(model: "tiny" | "base"): Promise<void> {
     });
 }
 
-export function doLocalWhisper(audioFile: Blob, model: "tiny" | "base"): Promise<any> {
+export function doLocalWhisper(audioFile: Blob, model: "tiny" | "small" | "base"): Promise<any> {
     return new Promise((resolve) => {
         const fileReader = new FileReader();
         fileReader.onloadend = async () => {
