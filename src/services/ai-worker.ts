@@ -1,7 +1,10 @@
 // @ts-ignore
-import { AutomaticSpeechRecognitionPipeline, pipeline } from '@xenova/transformers';
+import { AutomaticSpeechRecognitionPipeline, pipeline, env } from '@xenova/transformers';
 
 let transcriber: AutomaticSpeechRecognitionPipeline | undefined = undefined;
+
+env.allowLocalModels = false;
+env.useBrowserCache = false;
 
 self.onmessage = async (e) => {
     if (e.data.type === 'transcribe') {
@@ -17,6 +20,12 @@ self.onmessage = async (e) => {
     }
     else if (e.data.type === "load") {
         await loadTranscriber(e.data.model || "tiny");
+
+        self.postMessage({
+            type: "loaded",
+            loaded: true
+        });
+
         return Promise.resolve();
     }
     else {

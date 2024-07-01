@@ -4,10 +4,19 @@ let whisperWorker: Worker;
 import WhisperWorker from './ai-worker?worker'
 
 export async function loadTranscriber(model: "tiny" | "base"): Promise<void> {
-    whisperWorker = new WhisperWorker();
-    whisperWorker.postMessage({
-        type: "load",
-        model: model || "tiny",
+    return new Promise((resolve) => {
+        whisperWorker = new WhisperWorker();
+
+        whisperWorker.onmessage = async (e) => {
+            if (e.data.type === "loaded") {
+                resolve();
+            }
+        };
+
+        whisperWorker.postMessage({
+            type: "load",
+            model: model || "tiny",
+        });
     });
 }
 

@@ -10,6 +10,8 @@ provideFluentDesignSystem().register(fluentButton(), fluentTextArea());
 
 import { styles } from '../styles/shared-styles';
 
+import "../components/model-loader";
+
 @customElement('app-home')
 export class AppHome extends LitElement {
 
@@ -22,6 +24,7 @@ export class AppHome extends LitElement {
   @state() currentFileData: any = null;
 
   @state() copied: boolean = false;
+  @state() modelLoaded: boolean = false;
 
   static styles = [
     styles,
@@ -117,6 +120,8 @@ export class AppHome extends LitElement {
     const { loadTranscriber } = await import('../services/whisper');
     await loadTranscriber('tiny');
 
+    this.modelLoaded = true;
+
     // when we start transcribing we will get interim results
     // and display those to the user
     window.addEventListener("interim-transcription", (e: any) => {
@@ -203,10 +208,12 @@ export class AppHome extends LitElement {
     return html`
       <app-header></app-header>
 
+      ${this.modelLoaded === false ? html`<model-loader></model-loader>` : null}
+
       <main>
         <div id="actions-menu">
           <div id="main-action-block">
-            <fluent-button @click="${this.transcribeFile}" appearance="accent" ?disabled="${this.transcribing}" id="main-action">Upload a File</fluent-button>
+            <fluent-button @click="${this.transcribeFile}" appearance="accent" ?disabled="${this.transcribing || this.modelLoaded === false}" id="main-action">Upload a File</fluent-button>
 
             ${
               this.currentFileData ? html`
