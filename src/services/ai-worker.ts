@@ -1,5 +1,5 @@
 // @ts-ignore
-import { AutomaticSpeechRecognitionPipeline, pipeline, env } from '@xenova/transformers';
+import { AutomaticSpeechRecognitionPipeline, pipeline, env } from '@huggingface/transformers';
 
 let transcriber: AutomaticSpeechRecognitionPipeline | undefined = undefined;
 
@@ -37,7 +37,9 @@ export async function loadTranscriber(model: "tiny" | "base"): Promise<void> {
     return new Promise(async (resolve) => {
         if (!transcriber) {
             try {
-                transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`);
+                transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`, {
+                    device: "webgpu"
+                });
                 console.log("Transcriber loaded", transcriber)
             }
             catch (err) {
@@ -106,6 +108,7 @@ function chunk_callback(chunk: any) {
 function callback_function(item: any) {
     const time_precision =
         transcriber?.processor.feature_extractor.config.chunk_length /
+        // @ts-ignore
         transcriber?.model.config.max_source_positions;
 
     const last: any = chunks_to_process[chunks_to_process.length - 1];
