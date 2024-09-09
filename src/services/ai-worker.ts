@@ -37,8 +37,10 @@ export async function loadTranscriber(model: "tiny" | "base"): Promise<void> {
     return new Promise(async (resolve) => {
         if (!transcriber) {
             try {
+                // cast navigator to any as webnn is not in the typescript
+                // types yet.
                 transcriber = await pipeline('automatic-speech-recognition', `Xenova/whisper-${model}`, {
-                    device: "webgpu"
+                    device: (navigator as any).ml ? "webnn" : "webgpu"
                 });
                 console.log("Transcriber loaded", transcriber)
             }

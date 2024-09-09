@@ -16,7 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@fluentui/web-components": "^2.6.1",
-    "@huggingface/transformers": "^3.0.0-alpha.9",
+    "@huggingface/transformers": "^3.0.0-alpha.14",
     "@shoelace-style/shoelace": "^2.16.0",
     "@thepassle/app-tools": "^0.9.12",
     "lit": "^3.2.0",
